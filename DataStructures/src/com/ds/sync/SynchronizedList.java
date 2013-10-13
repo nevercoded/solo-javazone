@@ -37,7 +37,7 @@ public class SynchronizedList implements Serializable{
         return elementData[index];
     }
 
-    public void set(Object data, int index){
+    public synchronized void set(Object data, int index){
         if(index<0){
             throw new InvalidIndexException("Index out of bound");
         }
@@ -45,7 +45,7 @@ public class SynchronizedList implements Serializable{
         elementData[index] = data;
     }
 
-    public void add(Object data){
+    public synchronized void add(Object data){
         checkCapacity(size+1);
         elementData[size++] = data;
     }
