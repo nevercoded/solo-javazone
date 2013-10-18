@@ -6,6 +6,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Created with IntelliJ IDEA.
  * User: skumar
@@ -115,6 +120,18 @@ public class Tests {
             t1.join();
             System.out.println("Current Thread is running now");
             Assert.assertTrue(Thread.currentThread().isAlive());
+        }
+    }
+
+    public void testLockObject(){
+        Lock lock2 = new ReentrantLock();
+        lock2.lock();
+        try{
+            // DO something
+            System.out.println("Now this is critical section");
+
+        }finally {
+            lock2.unlock();
         }
     }
 
