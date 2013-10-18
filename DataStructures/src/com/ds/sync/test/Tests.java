@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -123,6 +123,7 @@ public class Tests {
         }
     }
 
+    @Test
     public void testLockObject(){
         Lock lock2 = new ReentrantLock();
         lock2.lock();
@@ -135,5 +136,67 @@ public class Tests {
         }
     }
 
+    @Test
+    public void testExecutorServiceSingleThreadExecutor() throws InterruptedException {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Executor Service SingleThreadExecutor1");
+            }
+        });
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Executor Service SingleThreadExecutor2");
+            }
+        });
+        // Wait for some time for the threads to finish
+        // Here the threads should finish in sequence i.e. 1 and then 2.
+        Thread.sleep(3000);
+        executorService.shutdown();
+    }
+
+    @Test
+    public void testExecutorServiceFixedThreadPool() throws InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Executor Service SingleThreadExecutor1");
+            }
+        });
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Executor Service SingleThreadExecutor2");
+            }
+        });
+        // In this test thread 2 should finish and then 1 as they will be running in parallel.
+        Thread.sleep(3000);
+        executorService.shutdown();
+    }
+
+    @Test
+    public void testExecutorServiceSubmitRunnable() throws Exception {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future future = executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Executor Service SingleThreadExecutor");
+            }
+        });
+        Assert.assertTrue(future.get()==null);
+    }
 
 }
