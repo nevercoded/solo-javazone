@@ -9,12 +9,12 @@ import java.util.LinkedList;
  * Time: 9:36 PM
  * Blocking Queue implementation
  */
-public class BlockingQueue {
+public class BlockingQueueImpl {
 
     LinkedList queue = new LinkedList();
     int limit = 10;
 
-    public BlockingQueue(int limit){
+    public BlockingQueueImpl(int limit){
         this.limit = limit;
     }
 
